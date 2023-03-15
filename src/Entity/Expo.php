@@ -40,6 +40,9 @@ class Expo
     #[ORM\ManyToMany(targetEntity: Artist::class, mappedBy: 'expos')]
     private Collection $artists;
 
+    #[ORM\Column(length: 96)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->artists = new ArrayCollection();
@@ -157,6 +160,18 @@ class Expo
         if ($this->artists->removeElement($artist)) {
             $artist->removeExpo($this);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
