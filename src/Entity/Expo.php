@@ -49,6 +49,9 @@ class Expo
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $misc = null;
+
     public function __construct()
     {
         $this->artists = new ArrayCollection();
@@ -202,6 +205,18 @@ class Expo
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getMisc(): ?string
+    {
+        return $this->misc;
+    }
+
+    public function setMisc(?string $misc): self
+    {
+        $this->misc = $misc;
 
         return $this;
     }
