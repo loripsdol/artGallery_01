@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ImageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
@@ -24,6 +26,17 @@ class Image
 
     #[ORM\Column(length: 4, nullable: true)]
     private ?string $year = null;
+
+    #[ORM\ManyToMany(targetEntity: Expo::class, mappedBy: 'images')]
+    private Collection $expos;
+
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    private ?Artist $artist = null;
+
+    public function __construct()
+    {
+        $this->expos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +87,45 @@ class Image
     public function setYear(?string $year): self
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Expo>
+     */
+    public function getExpos(): Collection
+    {
+        return $this->expos;
+    }
+
+    public function addExpo(Expo $expo): self
+    {
+        if (!$this->expos->contains($expo)) {
+            $this->expos->add($expo);
+            $expo->addImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpo(Expo $expo): self
+    {
+        if ($this->expos->removeElement($expo)) {
+            $expo->removeImage($this);
+        }
+
+        return $this;
+    }
+
+    public function getArtist(): ?Artist
+    {
+        return $this->artist;
+    }
+
+    public function setArtist(?Artist $artist): self
+    {
+        $this->artist = $artist;
 
         return $this;
     }
