@@ -43,6 +43,18 @@ class Artist
     #[ORM\ManyToMany(targetEntity: Expo::class, inversedBy: 'artists')]
     private Collection $expos;
 
+    #[ORM\Column(length: 128)]
+    private ?string $slug = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $misc = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->expos = new ArrayCollection();
@@ -169,6 +181,54 @@ class Artist
     public function removeExpo(Expo $expo): self
     {
         $this->expos->removeElement($expo);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getMisc(): ?string
+    {
+        return $this->misc;
+    }
+
+    public function setMisc(?string $misc): self
+    {
+        $this->misc = $misc;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
