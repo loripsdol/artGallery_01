@@ -46,9 +46,6 @@ class Artist
     #[ORM\ManyToMany(targetEntity: Expo::class, inversedBy: 'artists')]
     private Collection $expos;
 
-    #[ORM\Column(length: 128)]
-    private ?string $slug = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $misc = null;
 
@@ -190,18 +187,7 @@ class Artist
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
+    
     public function getMisc(): ?string
     {
         return $this->misc;
